@@ -3,3 +3,5 @@ idea/
 .idea/
 *.pyc
 info.txt
+config.py
+config_sample.py

@@ -1,1 +1,1 @@
-web: gunicorn app:coding4schoolReport
+web: gunicorn coding4schoolReport:app

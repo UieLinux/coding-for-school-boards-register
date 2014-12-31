@@ -9,6 +9,10 @@ app = Flask(__name__)
 boards_collection = Storage(host=config.db_host).get_collection(db='boards_register',
                                                                 collection_name='registered_boards')
 
+# Admin
+from admin_api.admin_api import admin
+app.register_blueprint(blueprint=admin, url_prefix='/admin')
+
 @app.route('/')
 def home():
     registed_boards_num = boards_collection.find({}).count()
@@ -18,7 +22,8 @@ def home():
 def register(guid):
 
     boards_collection.find_and_modify({'_id': str(guid)},
-                                      {'$set': {'registered_on': datetime.datetime.utcnow()}},
+                                      {'$set': {'registered_on': datetime.datetime.utcnow()},
+                                       '$inc': {'seen': 1}},
                                       upsert=True)
 
     return json.dumps({'id': str(guid)})
